@@ -9,7 +9,7 @@
 import argparse
 from orch_base import *
 
-DEPLOYER_VER = "7.6.x b171"
+DEPLOYER_VER = "7.6.x b175"
 
 def main():
 
@@ -98,7 +98,7 @@ def main():
             elif task['type'] == 'delete_devices':
                 deleteDevicesTask(session, task)
             elif task['type'] == 'model_devices':
-                createModelDevicesTask(session, task)
+                createModelDevicesTask(cfg, session, task)
             elif task['type'] == 'apply_cli':
                 applyCLIConfigTask(cfg, task)
             elif task['type'] == 'onboard':

@@ -84,7 +84,7 @@ def setNewPassword(client: SSHClient, fgt: dict, cfg: dict, silent=False):
             'port' (int, optional): SSH port, default = 22
         }
     """
-    silent or print(f"Connecting to {fgt['ip']} with {cfg['fgt_user']} and trying to set the new password to {cfg['fgt_password']}")
+    silent or print(f"Connecting to {fgt['ip']} with {cfg['fgt_user']} and trying to set the new password")
     client.connect(
         fgt['ip'],
         port = fgt.get('port', 22),
@@ -179,7 +179,7 @@ def deleteDevicesTask(session: ApiSession, task: dict, silent=False):
     )
 
 
-def createModelDevicesTask(session: ApiSession, task: dict, silent=False):
+def createModelDevicesTask(cfg: dict, session: ApiSession, task: dict, silent=False):
     """Create Model Devices on FMG.
 
     Args:
@@ -217,7 +217,11 @@ def createModelDevicesTask(session: ApiSession, task: dict, silent=False):
     session.addModelDevices(dev_list, adom=task.get('adom'))
     session.setVariables(vars, adom=task.get('adom'))
     if 'prerun' in task:
-        session.assignCLITemplate(task['prerun'], dev_list, adom=task.get('adom'))        
+        session.assignCLITemplate(task['prerun'], dev_list, adom=task.get('adom'))
+    if 'admin_user' in task:
+        for d in dev_list:
+            session.addAdminUser(d['name'], cfg['fgt_password'], admin_user=task['admin_user'])
+    
 
 
 def onboardDevicesTask(cfg: dict, task: dict, session: ApiSession=None, silent=False):
@@ -401,7 +405,7 @@ def __factoryResetDevice(client:SSHClient, fgt: dict, cfg: dict, args=None, sile
     Returns:
         bool: True on success
     """
-    silent or print(f"Connecting to {fgt['ip']} with {cfg['fgt_user']} / {cfg['fgt_password']}")
+    silent or print(f"Connecting to {fgt['ip']} with {cfg['fgt_user']}")
     client.connect(
         fgt['ip'],
         port = fgt.get('port', 22),
@@ -434,7 +438,7 @@ def __applyCLIConfig(client: SSHClient, fgt, cfg, cli_config, no_more=True, sile
         list[str]: CLI output (list of lines)
     """
     timeout = 10
-    silent or print(f"Connecting to {fgt['ip']} with {cfg['fgt_user']} / {cfg['fgt_password']}")
+    silent or print(f"Connecting to {fgt['ip']} with {cfg['fgt_user']}")
     client.connect(
         fgt['ip'],
         port = fgt.get('port', 22),

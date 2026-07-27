@@ -420,6 +420,27 @@ class ApiSession:
         
         self._run_request(payload, name="Set Variables")  
 
+    def addAdminUser(self, dev_name: str, admin_password: str, admin_user='admin', admin_profile='super_admin'):
+        """Add an admin user to requested device."""
+
+        payload = {
+            "session": self._session,
+            "id": 1,
+            "method": "set",
+            "params": [
+                {
+                    "url": "/pm/config/device/" + dev_name + "/global/system/admin",
+                    "data": {
+                        "name": admin_user,
+                        "password": admin_password,
+                        "accprofile": admin_profile
+                    }                    
+                }
+            ]
+        }
+        
+        self._run_request(payload, name=f"Add {admin_user} for {dev_name}")          
+
 
     def reinstallPolicy(self, dev_name: str):
         """Reinstall assigned Policy Package on requested device."""
