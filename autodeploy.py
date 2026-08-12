@@ -9,7 +9,7 @@
 import argparse
 from orch_base import *
 
-DEPLOYER_VER = "7.6.x b175"
+DEPLOYER_VER = "7.6.x b177"
 
 def main():
 

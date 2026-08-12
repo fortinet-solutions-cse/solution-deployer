@@ -168,6 +168,46 @@ class ApiSession:
     # ADOM Management
     ##############################################################
 
+    def getAdoms(self) -> list[dict]:
+        """Get all user-created ADOMs (excluding default/built-in).
+        
+        Returns:
+
+            list[dict]: [
+                {
+                    'name' (str): ADOM name
+                }, 
+                ...
+            ]
+        """  
+
+        payload = {
+            "session": self._session,
+            "id": 1,
+            "method": "get",
+            "params": [
+                {
+                    "url": "/dvmdb/adom",
+                    "filter": [ "create_time", "!=", "0" ], 
+                    "fields": [
+                        "name"
+                    ]
+                }
+            ]
+        }
+
+        content = self._run_request(payload, name=f"Get ADOMs")
+        adom_list = []
+        for adom in content['result'][0]['data']:
+            adom_list.append(
+                {
+                    'name': adom['name']
+                }
+            )
+
+        return adom_list        
+
+    
     def deleteAdom(self, adom: str=None):
         """Delete ADOM."""
 
