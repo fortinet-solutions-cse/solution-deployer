@@ -172,13 +172,15 @@ The task will:
 - Create the Model Devices
 - Set per-device Variables
 - Assign the Pre-run CLI Template
+- Set admin user password
 
 Supported arguments:
 
-| Argument | Values      | Description                    | Required | Default                      |
-|----------|-------------|--------------------------------|----------|------------------------------|
-| `src`    | filename(s) | Inventory CSV file             | yes      | -                            |
-| `prerun` | string      | Pre-run CLI Template to assign | no       | -                            |
+| Argument     | Values      | Description                    | Required | Default |
+|--------------|-------------|--------------------------------|----------|---------|
+| `src`        | filename(s) | Inventory CSV file             | yes      | -       |
+| `prerun`     | string      | Pre-run CLI Template to assign | no       | -       |
+| `admin_user` | string      | Admin username (e.g. admin)    | no       | -       |
 
 
 ### `type: onboard`
