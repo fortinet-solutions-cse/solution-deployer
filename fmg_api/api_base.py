@@ -240,7 +240,8 @@ class ApiSession:
                     'blueprint' (str): device blueprint,  
                     'sn' (str): serial number,  
                     'os_ver' (str, optional): major FOS version, default = 7,
-                    'os_mr' (str, optional): minor FOS version, default = 6  
+                    'os_mr' (str, optional): minor FOS version, default = 6,
+                    'vars' (dict, optional): metadata variables
                 },  
                 ...
             ]
@@ -257,6 +258,7 @@ class ApiSession:
                 "os_type": 0,
                 "os_ver": dev.get('os_ver', 7),
                 "mr": dev.get('os_mr', 6),
+                "meta variables": dev.get('vars', {}),
                 "adm_usr": "admin"
             })
 

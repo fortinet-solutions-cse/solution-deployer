@@ -201,21 +201,16 @@ def createModelDevicesTask(cfg: dict, session: ApiSession, task: dict, silent=Fa
                 "blueprint": d.pop('Device Blueprint'),
                 "sn": d.pop('Serial Number'),
                 "os_ver": int(fos_ver.split('.')[0]),
-                "os_mr": int(fos_ver.split('.')[1])
+                "os_mr": int(fos_ver.split('.')[1]),
+                "vars": { k: v for k, v in d.items() if v }
             })
-            for k, v in d.items():
-                if v:
-                    vars.setdefault(k, {})
-                    vars[k][dev_name] = v
     silent or print(f"Devices: {[dev['name'] for dev in dev_list]}")
-    silent or print(f"Variables: {[var for var in vars.keys()]}")
     silent or print(f"Target ADOM: {task.get('adom', session.adom)}")
     session.deleteDevices(
         session.getDevices('root'),
         adom='root'
     )    
     session.addModelDevices(dev_list, adom=task.get('adom'))
-    session.setVariables(vars, adom=task.get('adom'))
     if 'prerun' in task:
         session.assignCLITemplate(task['prerun'], dev_list, adom=task.get('adom'))
     if 'admin_user' in task:
